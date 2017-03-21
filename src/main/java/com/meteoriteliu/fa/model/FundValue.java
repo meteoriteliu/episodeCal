@@ -1,30 +1,33 @@
 package com.meteoriteliu.fa.model;
 
+import com.meteoriteliu.fa.config.GsonExclude;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class FundValue {
-	@Id 
+	@Id @GsonExclude
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable=false)
 	int id;
 	
-	@Column
+	@Column @GsonExclude
 	Integer fundId;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="fundId", updatable=false, insertable=false)
 	Fund fund;
+
+	@Column
+	@GsonExclude
+	@CreatedDate
+	Date createDate;
 	
 	public int getId() {
 		return id;
@@ -71,4 +74,34 @@ public class FundValue {
 	
 	@Column
 	BigDecimal value;
+
+	@Column
+	BigDecimal accuValue;
+
+	@Column
+	BigDecimal growRate;
+
+	public BigDecimal getGrowRate() {
+		return growRate;
+	}
+
+	public void setGrowRate(BigDecimal growRate) {
+		this.growRate = growRate;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public BigDecimal getAccuValue() {
+		return accuValue;
+	}
+
+	public void setAccuValue(BigDecimal accuValue) {
+		this.accuValue = accuValue;
+	}
 }

@@ -1,14 +1,16 @@
 package com.meteoriteliu.fa.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.meteoriteliu.fa.config.GsonExclude;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Fund {
-	@Id 
+	@Id @GsonExclude
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable=false)
 	int id;
@@ -17,10 +19,36 @@ public class Fund {
 	String name;
 	
 	@Column
+	@GsonExclude
 	String type;
 	
 	@Column
 	String code;
+
+	@Column
+	@CreatedDate
+	@GsonExclude
+	Date createDate;
+
+	@Column
+	@GsonExclude
+	Date lastSyncDate;
+
+	public Date getLastSyncDate() {
+		return lastSyncDate;
+	}
+
+	public void setLastSyncDate(Date lastSyncDate) {
+		this.lastSyncDate = lastSyncDate;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
 	public int getId() {
 		return id;
