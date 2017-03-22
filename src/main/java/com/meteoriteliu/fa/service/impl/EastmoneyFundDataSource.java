@@ -1,16 +1,12 @@
 package com.meteoriteliu.fa.service.impl;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.meteoriteliu.fa.model.Fund;
 import com.meteoriteliu.fa.model.FundValue;
+import com.meteoriteliu.fa.repository.FundDAO;
 import com.meteoriteliu.fa.repository.FundValueDAO;
+import com.meteoriteliu.fa.service.FundDataSource;
 import com.meteoriteliu.fa.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
@@ -19,11 +15,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.meteoriteliu.fa.model.Fund;
-import com.meteoriteliu.fa.service.FundDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class EastmoneyFundDataSource implements FundDataSource{
 
@@ -35,6 +33,9 @@ public class EastmoneyFundDataSource implements FundDataSource{
 
 	@Autowired
 	FundValueDAO fundValueDAO;
+
+	@Autowired
+	FundDAO fundDAO;
 
 	@Override
 	@Transactional
@@ -98,7 +99,12 @@ public class EastmoneyFundDataSource implements FundDataSource{
 				logger.debug("totalPage=" + totalPage + ", currPage=" + currPage + ", recordExists=" + recordExists);
 			} while (totalPage >= currPage && !recordExists);
 
-			fundValueDAO.save(values);
+			if (!values.isEmpty()) {
+				fundValueDAO.save(values);
+
+				fund.setLastSyncDate(new Date());
+				fundDAO.save(fund);
+			}
 			logger.info("updating fund " + fund.getCode() + " success. " + values.size() + " values updated.");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

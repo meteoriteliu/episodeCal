@@ -32,4 +32,22 @@ public class DateUtil {
         ca.setTime(date);
         return ca.get(field);
     }
+
+    public static String format(Date date, String pattern) {
+        if (date == null) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        return sdf.format(date);
+    }
+
+    public static String format(Date date) {
+        return format(date, "yyyy-MM-dd");
+    }
+
+    public static Date clearTime(Date date) {
+        return parseDate(format(date));
+    }
+
+    public static Date today() {
+        return clearTime(new Date());
+    }
 }

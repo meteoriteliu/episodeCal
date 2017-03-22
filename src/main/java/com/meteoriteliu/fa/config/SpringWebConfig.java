@@ -25,7 +25,6 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.persistence.Column;
 import java.util.List;
 
 @EnableWebMvc //<mvc:annotation-driven />

@@ -1,10 +1,7 @@
 package com.meteoriteliu.fa.config;
 
-import java.util.Properties;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
+import com.meteoriteliu.fa.service.FundDataSource;
+import com.meteoriteliu.fa.service.impl.EastmoneyFundDataSource;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -25,17 +22,20 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.meteoriteliu.fa.service.FundDataSource;
-import com.meteoriteliu.fa.service.impl.EastmoneyFundDataSource;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.meteoriteliu.fa.repository")
 @PropertySource(value="classpath:config.properties")
 @EnableJpaAuditing
+@EnableScheduling
 @ComponentScan(basePackages = {"com.meteoriteliu.fa.service"})
 public class SpringRootConfig {
 	

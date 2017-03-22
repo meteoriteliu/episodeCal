@@ -4,10 +4,9 @@ import com.meteoriteliu.fa.config.GsonExclude;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.persistence.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -21,14 +20,22 @@ public class FundValue {
 	Integer fundId;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="fundId", updatable=false, insertable=false)
+	@JoinColumn(name="fundId", updatable=false, insertable=false) @GsonExclude
 	Fund fund;
 
 	@Column
 	@GsonExclude
 	@CreatedDate
 	Date createDate;
-	
+	@Column
+	Date date;
+	@Column
+	BigDecimal value;
+	@Column
+	BigDecimal accuValue;
+	@Column
+	BigDecimal growRate;
+
 	public int getId() {
 		return id;
 	}
@@ -56,7 +63,7 @@ public class FundValue {
 	public Date getDate() {
 		return date;
 	}
-
+	
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -68,18 +75,6 @@ public class FundValue {
 	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
-
-	@Column
-	Date date;
-	
-	@Column
-	BigDecimal value;
-
-	@Column
-	BigDecimal accuValue;
-
-	@Column
-	BigDecimal growRate;
 
 	public BigDecimal getGrowRate() {
 		return growRate;
